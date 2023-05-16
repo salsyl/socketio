@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO Example</title>
+  </head>
+  <body>
+    <h1>Socket.IO Example</h1>
+
+    <form id="login-form">
+      <label for="username-input">Nom d'utilisateur :</label>
+      <input type="text" id="username-input" required />
+      <button type="submit">Se connecter</button>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      // Gestionnaire d'événement pour la soumission du formulaire
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", (event) => {
+          event.preventDefault();
+
+          // Récupération du nom d'utilisateur saisi
+          const username = document.getElementById("username-input").value;
+          console.log(username);
+
+          // // Connexion au serveur Socket.IO
+          // socket.connect();
+
+          // Émission de l'événement "connexion utilisateur" vers le serveur
+          socket.emit("connexion utilisateur", username);
+        });
+    </script>
+  </body>
+</html>

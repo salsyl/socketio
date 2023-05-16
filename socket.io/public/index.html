@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat en temps réel</title>
+    <style>
+      /* Appliquer une police globale et supprimer les marges et les espacements par défaut */
+      body {
+        font: 13px Helvetica, Arial;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Centrer le chat et lui donner une largeur fixe */
+      #chat {
+        margin: 0 auto;
+        width: 80%;
+      }
+
+      /* Supprimer les puces de liste pour les messages */
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Ajouter un peu d'espace autour de chaque message */
+      #messages li {
+        padding: 5px 10px;
+      }
+
+      /* Appliquer une couleur d'arrière-plan différente pour les messages impairs pour une meilleure lisibilité */
+      #messages li:nth-child(odd) {
+        background: #eee;
+      }
+
+      /* Faire en sorte que le formulaire de message s'étire pour remplir l'espace disponible */
+      #messageForm {
+        margin-top: 10px;
+        display: flex;
+        align-items: stretch;
+      }
+
+      /* Faire en sorte que le champ d'entrée du message s'étire pour remplir l'espace disponible */
+      #messageForm input {
+        flex-grow: 1;
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      /* Appliquer des styles au bouton d'envoi */
+      #messageForm button {
+        background: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px;
+        margin-left: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      /* Changer la couleur d'arrière-plan du bouton d'envoi lorsqu'il est survolé */
+      #messageForm button:hover {
+        background: #45a049;
+      }
+
+      /* Centrer le formulaire de connexion à l'écran */
+      #login {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      /* Appliquer des styles au champ d'entrée du nom d'utilisateur */
+      #login input {
+        margin-right: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      /* Appliquer des styles au bouton de connexion */
+      #login button {
+        background: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      /* Changer la couleur d'arrière-plan du bouton de connexion lorsqu'il est survolé */
+      #login button:hover {
+        background: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Section de connexion -->
+    <div id="login">
+      <!-- L'utilisateur peut entrer son nom d'utilisateur ici -->
+      <input id="username" placeholder="Entrez votre nom d'utilisateur" />
+      <button id="login-btn">Se connecter</button>
+      <!-- Bouton pour se connecter au chat -->
+    </div>
+    <!-- Section de chat -->
+    <div id="chat" style="display: none">
+      <!-- Les messages seront ajoutés dans cette liste -->
+      <ul id="messages"></ul>
+      <!-- Formulaire pour envoyer un message -->
+      <form id="messageForm"><input id="m" /><button>Envoyer</button></form>
+    </div>
+    <!-- Importation de la bibliothèque Socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      // Attendre que le DOM soit chargé avant d'exécuter le script
+      document.addEventListener("DOMContentLoaded", (event) => {
+        // Créer une nouvelle connexion Socket.io
+        const socket = io();
+        let username = "";
+
+        // Lorsque l'utilisateur clique sur "Se connecter"
+        document.getElementById("login-btn").addEventListener("click", () => {
+          // Récupérer le nom d'utilisateur entré
+          username = document.getElementById("username").value;
+          // Cacher la section de connexion
+          document.getElementById("login").style.display = "none";
+          // Afficher la section de chat
+          document.getElementById("chat").style.display = "block";
+        });
+
+        // Lorsque l'utilisateur soumet un message
+        document
+          .getElementById("messageForm")
+          .addEventListener("submit", (e) => {
+            // Empêcher le rechargement de la page
+            e.preventDefault();
+            // Envoyer le message au serveur
+            socket.emit(
+              "chat message",
+              username + ": " + document.getElementById("m").value
+            );
+            // Réinitialiser le champ de saisie du message
+            document.getElementById("m").value = "";
+          });
+
+        // Lorsque le serveur envoie un message
+        socket.on("chat message", (msg) => {
+          // Créer un nouvel élément li pour le message
+          const li = document.createElement("li");
+          // Ajouter le texte du message à l'élément li
+          li.textContent = msg;
+          // Ajouter l'élément li à la liste de messages
+          document.getElementById("messages").appendChild(li);
+        });
+      });
+    </script>
+  </body>
+</html>

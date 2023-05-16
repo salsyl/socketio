@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Socket.IO exemple</h1>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      // Connexion au serveur Socket.IO
+      const socket = io();
+
+      // Écoute de l'événement "chat message" envoyé par le serveur
+      socket.on("chat message", function (msg) {
+        console.log("Message reçu:", msg);
+      });
+
+      // Émission d'un événement "chat message" vers le serveur avec le message "Hello Socket.IO!"
+      socket.emit("chat message", "Hello Socket.IO!");
+    </script>
+  </body>
+</html>
+<!-- Dans le balisage HTML, nous avons inclus le script socket.io.js fourni par Socket.IO. 
+Cela permet au client de se connecter au serveur Socket.IO.
+
+Ensuite, dans la balise <script>, nous effectuons les opérations suivantes :
+    Nous utilisons const socket = io(); pour créer une instance de connexion Socket.IO entre le client et le serveur. 
+    Cela établit la connexion avec le serveur Socket.IO
+    .
+Nous écoutons l'événement "chat message" envoyé par le serveur en utilisant
+ socket.on('chat message', function(msg) {...});. Lorsque cet événement est reçu,
+ la fonction de rappel est exécutée, 
+ et nous affichons le message reçu dans la console du client.
+
+Enfin, nous émettons un événement "chat message" vers le serveur en utilisant
+ socket.emit('chat message', 'Hello Socket.IO!'); 
+ Cela envoie le message "Hello Socket.IO!" au serveur. 
+-->

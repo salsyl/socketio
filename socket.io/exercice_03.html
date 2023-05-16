@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exercice 03 - Socket.IO</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script> -->
+  </head>
+  <body>
+    <h1>Exercice 03 - Socket.IO</h1>
+    <p>
+      exercice 3 "Émettre un événement depuis le serveur vers le client et
+      afficher le message associé à cet événement dans la console du client."
+      vous devez effectuer les actions suivantes : Du côté du serveur
+      (exercice_03.js), émettez un événement vers le client (exercice_03.html)
+      en utilisant Socket.IO. Le client doit écouter cet événement et afficher
+      le message associé dans la console du navigateur.
+    </p>
+    <script>
+      const socket = io();
+
+      // Écoute de l'événement 'message-du-serveur' émis par le serveur
+      socket.on("message-du-serveur", (message) => {
+        console.log("Message reçu du serveur :", message);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exercice 01</title>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script> -->
+  </head>
+  <body>
+    <h1>Exercice 01</h1>
+    <p>
+      Créer une page exercice_01.html avec un formulaire de connexion contenant
+      un champ pour saisir le nom d'utilisateur. Lorsque l'utilisateur soumet le
+      formulaire, se connecter au serveur Socket.IO et afficher un message de
+      confirmation dans la console du serveur.
+    </p>
+    <form id="login-form">
+      <label for="username-input">Nom d'utilisateur :</label>
+      <input type="text" id="username-input" required />
+      <button type="submit">Se connecter</button>
+    </form>
+
+    <script>
+      const socket = io();
+
+      // Gestionnaire d'événement pour la soumission du formulaire
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", (event) => {
+          event.preventDefault();
+
+          // Récupération du nom d'utilisateur saisi
+          const username = document.getElementById("username-input").value;
+
+          // Connexion au serveur Socket.IO
+          socket.connect();
+
+          // Émission de l'événement "connexion-utilisateur" vers le serveur
+          socket.emit("connexion-utilisateur", username);
+
+          // Affichage du message de confirmation dans la console du serveur
+          socket.on("confirmation-connexion", () => {
+            console.log(`Le client ${username} s'est connecté avec succès.`);
+          });
+        });
+    </script>
+  </body>
+</html>

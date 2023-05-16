@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exercice 02 - Socket.IO</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script> -->
+  </head>
+  <body>
+    <h1>Exercice 02 - Socket.IO</h1>
+
+    <button id="send-button">Envoyer un message au serveur</button>
+
+    <script>
+      const socket = io();
+
+      document.getElementById("send-button").addEventListener("click", () => {
+        const message = "Bonjour serveur !";
+
+        // Émettre un événement personnalisé depuis le client vers le serveur
+        socket.emit("message-client-vers-serveur", message);
+      });
+    </script>
+  </body>
+</html>
