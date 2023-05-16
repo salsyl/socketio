@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pierre Papier Ciseaux</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        text-align: center;
+      }
+
+      button {
+        background-color: #4caf50; /* Vert */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+
+      #result {
+        margin-top: 20px;
+        font-size: 20px;
+      }
+
+      #choices {
+        margin-top: 20px;
+      }
+
+      #choices button {
+        margin-right: 10px;
+      }
+    </style>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Pierre Papier Ciseaux</h1>
+      <div id="choices">
+        <button onclick="jouer('pierre')">Pierre</button>
+        <button onclick="jouer('papier')">Papier</button>
+        <button onclick="jouer('ciseaux')">Ciseaux</button>
+      </div>
+      <div id="result"></div>
+    </div>
+
+    <script>
+      const socket = io();
+
+      function jouer(choix) {
+        socket.emit("jouer", choix);
+      }
+
+      socket.on("resultat", (data) => {
+        let resultat = "";
+        if (data.gagnant === "égalité") {
+          resultat = "Égalité !";
+        } else if (data.gagnant === "joueur1") {
+          resultat = "Vous avez gagné !";
+        } else {
+          resultat = "Vous avez perdu...";
+        }
+        document.getElementById("result").textContent =
+          "Votre adversaire a choisi : " +
+          data.choixAdversaire +
+          ". " +
+          resultat;
+      });
+    </script>
+  </body>
+</html>
